@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 
+    Student Assignment Dashboard
+    A simple dashboard to manage student assignments.
+    Author: Shimon Brandsdorfer
+    Date: 2025-06-27
+    Version: 1.0.0
+    License: MIT
+    This dashboard was created for the Viewpoint Academy course 2025
+    This code is a simple HTML dashboard for managing student assignments.
+
+-->
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Assignment Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="container">
+        <!-- Dashboard Header -->
+        <img src="assets/vp-logo.png" alt="Dashboard Logo" class="logo" />
+        <h1>📘 Student Assignment Dashboard</h1>
+        <h2>Manage Your Assignments</h2>
+        <p>Keep track of your assignments, due dates, and grades.</p>
+
+        <!-- 
+            Stats Section
+            Displays total assignments, completed assignments, and average grade.
+            This section updates dynamically as assignments are added or modified.
+            See script.js for functionality.
+        -->
+
+        <section class="stats">
+            <p>Total Assignments: <span id="total">0</span></p>
+            <p>Completed: <span id="completed">0</span></p>
+            <p>Average Grade: <span id="average">N/A</span></p>
+        </section>
+
+        <!-- 
+            Assignment Form
+            A form to add new assignments.
+            It includes fields for title, due date, and optional grade.
+            The form uses JavaScript to handle submission and validation.
+        -->
+
+
+        <form id="assignment-form">
+            <div class="form-groups">
+
+
+                <div class="form-group">
+                    <label for="title">Assignment Title:</label>
+                    <input type="text" id="title" placeholder="Assignment Title" required />
+                </div>
+                <div class="form-group">
+                    <label for="due-date">Due Date:</label>
+                    <input type="date" id="due-date" required />
+                </div>
+                <div class="form-group">
+                    <label for="grade">Grade (optional):</label>
+                    <input type="number" id="grade" placeholder="Grade (optional)" min="0" max="100" />
+                </div>
+            </div>
+            <button class="primary circular" type="submit">+</button>
+        </form>
+
+        <!-- 
+            Assignments Section
+            Displays a table of assignments with options to edit or delete.
+            Each assignment shows its title, due date, grade, and status.
+            The status is determined by whether the assignment is completed or not.
+        -->
+
+        <section>
+            <h2>Your Assignments</h2>
+            <table id="assignment-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Due</th>
+                        <th>Grade</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="assignment-list">
+                    <!-- Assignments will appear here -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

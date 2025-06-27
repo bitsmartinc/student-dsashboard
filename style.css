@@ -1,0 +1,120 @@
+/*
+    * Simple CSS for a task management web application
+    * This stylesheet styles the body, form, table, and buttons.
+    * It also includes responsive design elements.
+    */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background: #f8f8f8;
+}
+
+.logo {
+    display: block;
+    margin: 0 auto 20px auto;
+    max-width: 150px;
+    height: auto;
+}
+
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form input {
+    display: block;
+    margin: 10px 0;
+    padding: 8px;
+    font-size: 1em;
+}
+
+
+/** form - make the inputs on same line **/
+form input[type="text"] {
+    margin: 5px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table,
+th,
+td {
+    border: 1px solid #ccc;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: center;
+}
+
+tr.done {
+    background-color: #e0ffe0;
+    text-decoration: line-through;
+}
+
+.actions button {
+    margin: 0 3px;
+    padding: 4px 8px;
+    font-size: 0.9em;
+}
+
+form#assignment-form {
+    display: flex;
+    align-items: flex-end;
+    /* Align bottom of inputs and button */
+    gap: 10px;
+    flex-wrap: wrap;
+    /* Allows wrapping on smaller screens */
+}
+
+div.form-groups {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+button.primary.circular {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 24px;
+    line-height: 0;
+    border: none;
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
+    align-self: center;
+}
+
+/** Animations **/
+@keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .assignment-row {
+    animation: slideIn 0.4s ease-in;
+  }
+  
