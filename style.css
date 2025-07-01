@@ -69,6 +69,15 @@ tr.done {
     font-size: 0.9em;
 }
 
+.dlt-btn{
+    background-color: red;
+    color : white;
+}
+
+.dlt-btn:hover{
+    box-shadow: 5px 5px 5px 5px black;
+}
+
 form#assignment-form {
     display: flex;
     align-items: flex-end;
@@ -102,19 +111,43 @@ button.primary.circular {
     align-self: center;
 }
 
+form {
+    color : blue;
+}
+
 /** Animations **/
 @keyframes slideIn {
     from {
+      color : red;
       opacity: 0;
-      transform: translateX(-20px);
+      transform: translateX(-500px);
+    }
+    to {
+      color : black;
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideOut {
+    from {
+      opacity: 0;
+      transform: translateX(0px);
     }
     to {
       opacity: 1;
-      transform: translateX(0);
+      transform: translateX(500px);
     }
   }
   
   .assignment-row {
     animation: slideIn 0.4s ease-in;
   }
+
+  .assignment-row.deleted {
+    animation: slideOut 0.4s ease-in;
+  }
   
+  form {
+    animation: slideIn 2s ease-in;
+  }

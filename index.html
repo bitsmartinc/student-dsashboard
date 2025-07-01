@@ -16,6 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Student Assignment Dashboard</title>
     <link rel="stylesheet" href="style.css" />
+     <script src="./script.js"></script>
 </head>
 
 <body>
@@ -64,7 +65,7 @@
                     <input type="number" id="grade" placeholder="Grade (optional)" min="0" max="100" />
                 </div>
             </div>
-            <button class="primary circular" type="submit">+</button>
+            <button id="submit-btn" class="primary circular" type="submit">+</button>
         </form>
 
         <!-- 
@@ -88,12 +89,14 @@
                 </thead>
                 <tbody id="assignment-list">
                     <!-- Assignments will appear here -->
+                     
                 </tbody>
             </table>
         </section>
     </div>
 
-    <script src="script.js"></script>
+        
+   
 </body>
 
 </html>

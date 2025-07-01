@@ -1,83 +1,143 @@
-const form = document.getElementById("assignment-form");
-const list = document.getElementById("assignment-list");
+/**
+ * {
+ *  title: String;
+ *  dueDate : Date;
+ *  grade: Number;
+ *  done : Boolean;
+ * }
+ */
 
-let assignments = [];
+const assignmentsAsSt = localStorage.getItem('assignments');
 
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
+const assignments = assignmentsAsSt ? JSON.parse(assignmentsAsSt) : [];
 
-  const title = document.getElementById("title").value;
-  const due = document.getElementById("due-date").value;
-  const gradeInput = document.getElementById("grade").value;
-  const grade = gradeInput ? parseFloat(gradeInput) : null;
-
-  const assignment = {
-    id: Date.now(),
-    title,
-    due,
-    grade,
-    done: false
-  };
-
-  assignments.push(assignment);
-  form.reset();
-  renderAssignments();
+assignments.forEach(assignment => {
+    assignment.dueDate = new Date(assignment.dueDate)
 });
 
-function renderAssignments() {
-  list.innerHTML = "";
-  assignments.forEach((a) => {
-    const row = document.createElement("tr");
-    row.classList.add("assignment-row");
-    if (a.done) row.classList.add("done");
+document.addEventListener('DOMContentLoaded', function (){
 
-    row.innerHTML = `
-      <td>${a.title}</td>
-      <td>${a.due}</td>
-      <td>${a.grade ?? "—"}</td>
-      <td>${a.done ? "Done" : "Not Done"}</td>
-      <td class="actions">
-        <button onclick="toggleDone(${a.id})">${a.done ? "Undo" : "Mark Done"}</button>
-        <button onclick="editGrade(${a.id})">Edit Grade</button>
-        <button onclick="deleteAssignment(${a.id})">Delete</button>
-      </td>
-    `;
-    list.appendChild(row);
-  });
+    syncPage();
 
-  updateStats();
+    //find the form element
+    const formElement = document.querySelector('#assignment-form');
+    
+    formElement.addEventListener('submit', function(event){
+        event.preventDefault();
+
+        const titleElement = document.querySelector('#title');
+        const titleValue = titleElement.value;
+
+        //find the input element for due date
+        const dueDateElement = document.querySelector('#due-date');
+        const dueDateValue = dueDateElement.value;
+
+        const dueDateValueAsDate = new Date(dueDateValue);
+
+        const gradeElement = document.querySelector('#grade');
+        const gradeValue = gradeElement.value;
+
+        const gradeValueAsNumber = Number(gradeValue);
+
+        const assignment = {
+            title : titleValue,
+            dueDate : dueDateValueAsDate,
+            grade : gradeValueAsNumber
+        };
+
+        assignments.push(assignment);
+
+        formElement.reset();
+
+        syncPage();
+    });
+});
+
+function renderAssignments(){
+    const tbodyElement = document.querySelector('#assignment-list');
+
+    tbodyElement.innerHTML = '';
+    assignments.forEach(function (assignment, index){
+        const rowElement = document.createElement('tr');
+        rowElement.classList.add('assignment-row');
+        rowElement.id = `assignment-${index}`;
+
+        rowElement.innerHTML = `
+            <td>${assignment.title}</td>
+            <td>${new Intl.DateTimeFormat("en-US").format(assignment.dueDate)}</td>
+            <td>${assignment.grade}</td>
+            <td>${assignment.done ? 'Done' : 'Not Done'}</td>
+            <td>
+                <button onclick="toggleDone(${index})" class="mark-done-btn">
+                    Mark ${assignment.done ? 'Not Done' : 'Done'}
+                </button>
+                <button class="dlt-btn" onclick="deleteAsst(${index})">
+                    Delete
+                </button>
+                <button onclick="editGrade(${index})" class="edit-grade-btn">
+                    Edit Grade
+                </button>
+            </td>`;
+
+        tbodyElement.appendChild(rowElement);
+        
+    });
+
+    
+    
 }
 
-function toggleDone(id) {
-  const a = assignments.find((a) => a.id === id);
-  a.done = !a.done;
-  renderAssignments();
+function toggleDone(index){
+    assignments[index].done = !assignments[index].done;
+    syncPage();
 }
 
-function editGrade(id) {
-  const newGrade = prompt("Enter new grade:");
-  if (newGrade !== null) {
-    const gradeVal = parseFloat(newGrade);
-    if (!isNaN(gradeVal) && gradeVal >= 0 && gradeVal <= 100) {
-      const a = assignments.find((a) => a.id === id);
-      a.grade = gradeVal;
-      renderAssignments();
-    } else {
-      alert("Invalid grade.");
-    }
-  }
+function deleteAsst(index){
+    assignments.splice(index, 1);
+
+    syncPage();
 }
 
-function deleteAssignment(id) {
-  assignments = assignments.filter((a) => a.id !== id);
-  renderAssignments();
+function editGrade(index){
+    const newValue = prompt("Enter new Grade");
+    assignments[index].grade = Number(newValue);
+    syncPage();
 }
 
-function updateStats() {
-  document.getElementById("total").textContent = assignments.length;
-  document.getElementById("completed").textContent = assignments.filter(a => a.done).length;
+function renderStats(){
+    //find the total element
+    const totalElement = document.querySelector('#total');
+    const totalValue = assignments.length;
 
-  const graded = assignments.filter(a => a.grade !== null);
-  const avg = graded.reduce((sum, a) => sum + a.grade, 0) / (graded.length || 1);
-  document.getElementById("average").textContent = graded.length ? avg.toFixed(1) : "N/A";
+    totalElement.innerHTML = totalValue;
+
+    //find the completed element
+    const completedElement = document.querySelector('#completed');
+    const completedValue = assignments.reduce(function(acc, assignment){
+        return acc + (assignment.done ? 1 : 0);
+    }, 0);
+
+    completedElement.innerHTML = completedValue;
+
+    //find the average element
+    const averageElement = document.querySelector('#average');
+
+    const sumGradesValue = assignments.reduce(function (acc, assignment) {
+        return acc + assignment.grade;
+    }, 0);
+    
+    const averageValue = sumGradesValue / assignments.length;
+
+    averageElement.innerHTML = averageValue.toFixed(2);
+}
+
+function saveDataToStorage(){
+    const assignmentsAsString = JSON.stringify(assignments);
+    localStorage.setItem('assignments', assignmentsAsString);
+}
+
+function syncPage(){
+    renderAssignments();
+    renderStats();
+    saveDataToStorage();
 }
